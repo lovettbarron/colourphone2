@@ -1,2 +1,26 @@
-h1= title
-p Welcome to #{title}
+-var items = [ "twitter" ]	
+		
+- if (!everyauth.loggedIn)
+	div.container
+		div.hero-unit
+			h1 Colour Phone (proto2)
+			h3 Colourful conversations
+		div#auth.container
+			div.row
+				each item in items
+					a(href='/auth/' + item)
+						div.span4.offset4 
+							Connect with #{item}
+		div.bottom-bar
+			div.bottombar-inner
+				div.container
+					div.span4.offset2
+						a(href='http://readywater.ca') Readywater.ca
+					div.span4.offset2
+						a(href='http://aylanewhouse.com/') Ayla Newhouse
+-else
+	include nav
+	
+	div#main.container
+	
+	include footer

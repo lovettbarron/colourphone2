@@ -1,6 +1,18 @@
 !!!
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-  body!= body
+html(manifest="colourphone.appcache")
+	head
+		title= title
+		
+		meta(name="apple-mobile-web-app-capable", content="yes")
+		meta(name="viewport", content="width=device-width; initial-scale=1.0; user-scalable=0;")
+		meta(name="apple-mobile-web-app-status-bar-style", content="black")
+
+		script(src='socket.io/socket.io.js')
+		script(type='text/javascript', src='javascripts/jquery-1.7.1.min.js')
+		script(type='text/javascript', src='javascripts/zepto.js')
+		script(type='text/javascript', src='javascripts/workers.js')	
+		script(type='text/javascript', src='javascripts/friends.js')		
+		script(type='text/javascript', src='javascripts/init.js')
+		link(rel='stylesheet', href='stylesheets/bootstrap.css', media="screen, mobile")
+		link(rel='stylesheet', href='stylesheets/style.css'), media="screen, mobile"
+	body(onload='load()')!= body
