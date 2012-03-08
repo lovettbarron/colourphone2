@@ -5,7 +5,7 @@ var express = require('express'),
 		OAuth = require('oauth').OAuth,
 		io = require('socket.io'),
 //		connect = require('connect'), //Automatic in express I think?
-		winston = require('winston'),
+//		winston = require('winston'),
  		util = require('util');
 
 //Session stores
@@ -34,78 +34,8 @@ var db = mongoose.connect('mongodb://localhost/colour', function(err) {
 
 var app = module.exports = express.createServer();
 
-/************************
- * Database setup       *
-*************************/
-
-//Database model
-var Schema = mongoose.Schema
-  , ObjectId = Schema.ObjectId;
-	
-var userSchema = new Schema({
-	name					: {
-		first	: String
-		, last: String
-	}		
-	, friends			: [friendSchema]
-	, joined			: Date
-	, online			: Boolean
-}), User;
-
-var friendSchema = new Schema({
-	id: String
-	, name: String
-//	, colour: [colourSchema]
-}), friend;
-
-var colourSchema = new Schema({
-	_id : Schema.ObjectId 
-	, 	colour: {
-		to : String
-		, from : String
-		, model: { type: String, default: 'RGB' }
-		, val1: Number
-		, val2: Number
-		, val3: Number
-		, sent: Date
-		, received: Boolean
-		, replied : Boolean
-	} 
-}), Colour;
-
-userSchema.plugin(mongooseAuth, {
-  everymodule: {
-    everyauth: {
-      User: function() {
-        return User;
-      }
-    }
-  },
-  facebook: {
-    everyauth: {
-      myHostname: 'http://colourphone.com',
-      appId: conf.fb.appId,
-      appSecret: conf.fb.appSecret,
-      redirectPath: '/',
-			//findOrCreateUser: function (session, accessToken, fbUserMetadata) {}
-    }
-  },
-  twitter: {
-    everyauth: {
-      myHostname: 'http://colourphone.com',
-      consumerKey: conf.twit.consumerKey,
-      consumerSecret: conf.twit.consumerSecret,
-      redirectPath: '/',
-	//		findOrCreateUser: function (session, accessToken, twitterUserMetadata) {}
-    }
-  }
-});
-
-//mongoose.model('User', userSchema);
-//mongoose.model('Colour', colourSchema);
-
-var User = mongoose.model('User', userSchema);	
-var Colour = mongoose.model('Colour', colourSchema, 'colour');
+//Models
+require('./model.js');
 
 /************************
  * Server config        *

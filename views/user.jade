@@ -1,0 +1,10 @@
+- each friend, key in friends
+	-if( (count % 3) == 0 ) 
+		div.row
+	- count++;
+	div.span4.well( class=friend.id	)
+		div.row
+			div.span1
+				img(src=friend.twit.pictureURL)
+			div.span2.colorPreview
+				h3= friend.name
