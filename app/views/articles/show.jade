@@ -1,0 +1,24 @@
+!= messages()
+
+h2= title
+
+p #{article.body}
+
+p.article_date #{dateformat(article.created_at, "%b %d, %Y at %I:%M %p")}
+
+p
+  a(href='/article/'+article._id+'/edit', title="edit") Edit
+  &nbsp;
+  a(class='destroy', href='/article/'+article._id, title="delete") Delete
+  &nbsp;
+  a(href='/articles', title="back") Back
+  &nbsp;
+  if (article.user)
+    br
+    | by
+    a(href='/profile/'+article.user.id, title="back")= article.user.fb.name.full
+
+p
+  h2 Comments
+  != partial('../comments/list', {collection : comments, as : 'comment'})
+  != partial('../comments/form')  
