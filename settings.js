@@ -52,7 +52,7 @@ function bootApplication(app) {
     // cookieParser should be above session
     app.use(express.cookieParser())
     app.use(express.session({
-      secret: 'noobjs',
+      secret: 'readywater',
       store: new mongoStore({
         url: config.db.uri,
         collection : 'sessions'
@@ -97,11 +97,11 @@ function bootApplication(app) {
     },
 
     appName : function(req, res) {
-      return 'nodejs express mongoose demo'
+      return 'ColourPhone'
     },
 
     slogan : function(req,res) {
-      return 'nodejs express mongoose demo'
+      return 'Colourful Communication'
     }
 
   })
@@ -113,7 +113,7 @@ function bootApplication(app) {
   // the compile function allows you to
   // define additional functions exposed to Stylus,
   // alter settings, etc
-
+/*
   function compile(str, path) {
     return stylus(str)
       .set('filename', path)
@@ -132,7 +132,7 @@ function bootApplication(app) {
     , dest: __dirname + '/public'
     , compile: compile
   }))
-
+*/
   // Don't use express errorHandler as we are using custom error handlers
   // app.use(express.errorHandler({ dumpExceptions: false, showStack: false }))
 

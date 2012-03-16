@@ -1,21 +1,21 @@
 development:
   db:
-    uri: "mongodb://localhost/noobjs_development"
+    uri: "mongodb://localhost/cphone_dev"
   facebook:
-    appId: "202263326537254"
-    appSecret: "f12d943a863da7bd6d27823355769ec5"
+    appId: "280674075334047"
+    appSecret: "62abcbf79fbdf7a018430d9ea6e09387"
     host_uri: "http://localhost:3000"
 staging:
   db:
-    uri: "mongodb://localhost/noobjs_staging"
+    uri: "mongodb://localhost/noobjs_stage"
   facebook:
-    appId: "202263326537254"
-    appSecret: "f12d943a863da7bd6d27823355769ec5"
+    appId: "280674075334047"
+    appSecret: "62abcbf79fbdf7a018430d9ea6e09387"
     host_uri: "http://localhost:3000"
 production:
   db:
-    uri: "mongodb://nodejs:nodejs@staff.mongohq.com:10045/app2591449"
+    uri: "mongodb://nodejs:nodejs@cp.mongohq.com:10045/app2591449"
   facebook:
-    appId: "202263326537254"
-    appSecret: "f12d943a863da7bd6d27823355769ec5"
+    appId: "280674075334047"
+    appSecret: "62abcbf79fbdf7a018430d9ea6e09387"
     host_uri: "http://nodejs-express-demo.herokuapp.com"
