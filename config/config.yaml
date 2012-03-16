@@ -4,7 +4,7 @@ development:
   facebook:
     appId: "280674075334047"
     appSecret: "62abcbf79fbdf7a018430d9ea6e09387"
-    host_uri: "http://localhost:3000"
+    host_uri: "http://localhost:3001"
 staging:
   db:
     uri: "mongodb://localhost/noobjs_stage"
