@@ -1,38 +1,66 @@
+app.get('/friends', function(req, res) {
+	var response = '';
+	var friendIds = [];
 
-/**
- * Module dependencies.
- */
+	var oa = new OAuth('https://api.twitter.com/oauth/request_token'
+								, 'https://api.twitter.com/oauth/access_token'
+								, conf.twit.consumerKey
+								, conf.twit.consumerSecret
+								, '1.0'
+								, null
+								, 'HMAC-SHA1');
 
-var express = require('express');
+	//Grab twitter friends list
+  oa.getProtectedResource("http://api.twitter.com/1/friends/ids.json"
+		, "GET"
+		, req.session.auth.twitter.accessToken
+		, req.session.auth.twitter.accessTokenSecret
+		, function (error, data) {
+	    	if (error) {
+		      console.log("Prob getting followers: " + JSON.stringify(error) );
+					console.log("accessToken: " +  req.session.auth.twitter.accessToken );
+					console.log("accessSecret: " + req.session.auth.twitter.accessTokenSecret );
+					console.log("User data: " + JSON.stringify(req.session.auth) );
+		    	}
+		    var obj = JSON.parse(data);
+				console.log( "Recieved object:" + JSON.stringify(obj) );
 
-var app = module.exports = express.createServer();
-
-// Configuration
-
-app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(express.bodyParser());
-  app.use(express.methodOverride());
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
-});
-
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler()); 
-});
-
-// Routes
-
-app.get('/', function(req, res){
-  res.render('index', {
-    title: 'Express'
-  });
-});
-
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+				//Grab and compare from mongodb
+				User.find({ 'twit.id' : { $in : obj.ids } }, function(err, docs) {
+					if (err) { console.log("Error retrieving friends: " + err); }
+					console.log( "Returned db matches: " + JSON.stringify( docs ) );
+					response = docs;
+					for(var key in docs) {
+						if(docs.hasOwnProperty(key)){
+								friendIds.push({ 
+										"id" : docs[key].twit.id
+										, "name" : docs[key].twit.name 
+									});
+							}
+						}
+					 console.log( "Friends list to be saved: " + JSON.stringify(friendIds) );
+						var friends = JSON.parse( JSON.stringify(friendIds), function() {
+							console.log(friends);
+						});
+						User.update( { 'twit.id' : req.user.twit.id }
+							, { 'friends' : friendIds	}
+							, function(err) {
+							if(err) { console.log("Error updating friends list: " + err); }
+							else { console.log("Friends list Saved to " + req.user.twit.id); }
+							//If update successful, then serve documents.
+						  if (req.xhr) {
+						    res.partial('user', { 
+									friends : friendIds
+									}, function(err, ret) {
+										
+										res.send({ friends: friendIds, you: req.user.twit.id, html : ret});
+										console.log("Sent friend list" + ret + ", err? " + err);
+									});
+						  }
+							else {
+								res.render('users', { friends : friendIds });
+							}							
+						});
+					});
+				});
+		});
