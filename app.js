@@ -38,6 +38,6 @@ mongooseAuth.helpExpress(app)          // Add in Dynamic View Helpers
 everyauth.helpExpress(app, { userAlias: 'current_user' })
 
 // Start the app by listening on <port>
-var port = process.env.PORT || 3001
+var port = process.env.PORT || 3000
 app.listen(port)
 console.log('Express app started on port '+port)
