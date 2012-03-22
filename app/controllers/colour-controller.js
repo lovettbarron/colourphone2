@@ -4,13 +4,6 @@ var Colour = mongoose.model('Colour')
 module.exports = function(app){
 
   // New Colour
-  app.get('/colour/new', auth.requiresLogin, function(req, res){
-    res.render('colour/new', {
-      title: 'New Colour',
-      Colour: new Colour({})
-    })
-  })
-
   app.param('id', function(req, res, next, id){  
     Colour
       .findOne({ _id : req.params.id })
@@ -49,51 +42,12 @@ module.exports = function(app){
     })
   })
 
-  // Edit an Colour
-  app.get('/Colour/:id/edit', auth.requiresLogin, function(req, res){
-    res.render('Colours/edit', {
-      title: 'Edit '+req.Colour.title,
-      Colour: req.Colour
-    })
-  })
-
-  // Update Colour
-  app.put('/Colours/:id', function(req, res){
-    var Colour = req.Colour
-
-    Colour.title = req.body.Colour.title
-    Colour.body = req.body.Colour.body
-
-    Colour.save(function(err, doc) {
-      if (err) {
-        utils.mongooseErrorHandler(err, req)
-        res.render('Colours/edit', {
-            title: 'Edit Colour'
-          , Colour: Colour
-        })
-      }
-      else {
-        req.flash('notice', 'Updated successfully')
-        res.redirect('/Colour/'+Colour._id)
-      }
-    })
-  })
-
   // View an Colour
   app.get('/Colour/:id', function(req, res){
     res.render('Colours/show', {
       title: req.Colour.title,
       Colour: req.Colour,
       Messages: req.Messages
-    })
-  })
-
-  // Delete an Colour
-  app.del('/Colour/:id', function(req, res){
-    var Colour = req.Colour
-    Colour.remove(function(err){
-      req.flash('notice', 'Deleted successfully')
-      res.redirect('/Colours')
     })
   })
 
